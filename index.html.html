@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏢 Estratégia Empresarial - Níveis de Dificuldade</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0a2f44, #1b4a6b);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 40px;
+            padding: 25px;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.5);
+            border: 4px solid gold;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0a2f44;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0 gold;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        /* INDICADOR DE NÍVEL */
+        .nivel-indicador {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 15px;
+            border-radius: 60px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .nivel-badge {
+            background: gold;
+            color: #2c3e50;
+            padding: 10px 30px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .nivel-facil { background: #27ae60; color: white; padding: 5px 15px; border-radius: 20px; }
+        .nivel-medio { background: #f39c12; color: white; padding: 5px 15px; border-radius: 20px; }
+        .nivel-dificil { background: #e74c3c; color: white; padding: 5px 15px; border-radius: 20px; }
+
+        /* COFRE */
+        .cofre-container {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            border-radius: 30px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 3px solid gold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cofre-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .cofre-titulo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cofre-valor {
+            background: gold;
+            color: #2c3e50;
+            padding: 10px 25px;
+            border-radius: 40px;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 0 20px gold;
+            transition: all 0.3s;
+        }
+
+        .cofre-barras {
+            display: flex;
+            gap: 5px;
+            height: 60px;
+            align-items: flex-end;
+            margin-top: 15px;
+        }
+
+        .barra-dinheiro {
+            flex: 1;
+            background: linear-gradient(0deg, #f1c40f, #f39c12);
+            border-radius: 10px 10px 0 0;
+            transition: height 0.5s;
+            position: relative;
+            min-height: 5px;
+        }
+
+        /* ALERTAS */
+        .alerta-falencia {
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: none;
+            animation: pulse-red 1s infinite;
+        }
+
+        .bonus-ativo {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+            animation: glow 1s infinite;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px #f39c12; }
+            50% { box-shadow: 0 0 30px #f39c12; }
+            100% { box-shadow: 0 0 10px #f39c12; }
+        }
+
+        @keyframes pulse-red {
+            0% { background: #e74c3c; }
+            50% { background: #c0392b; }
+            100% { background: #e74c3c; }
+        }
+
+        /* STATS */
+        .empresa-card {
+            background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .empresa-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stat {
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .stat-valor {
+            font-size: 28px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #2c3e50;
+        }
+
+        .sequencia-container {
+            background: #0a2f44;
+            color: white;
+            padding: 10px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .barra-progresso {
+            height: 15px;
+            background: #95a5a6;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .barra-preenchimento {
+            height: 100%;
+            background: linear-gradient(90deg, #27ae60, #2ecc71);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        /* PERGUNTAS */
+        .pergunta-container {
+            background: #f8f9fa;
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid #bdc3c7;
+            position: relative;
+        }
+
+        .dificuldade-tag {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .pergunta-numero {
+            background: #0a2f44;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .pergunta-texto {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+            padding-right: 100px;
+        }
+
+        .opcoes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .opcao {
+            background: white;
+            border: 3px solid #bdc3c7;
+            border-radius: 15px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .opcao:hover:not(.disabled) {
+            border-color: gold;
+            transform: translateX(10px);
+        }
+
+        .opcao.correta {
+            background: #d4edda;
+            border-color: #27ae60;
+        }
+
+        .opcao.incorreta {
+            background: #f8d7da;
+            border-color: #e74c3c;
+        }
+
+        .opcao.disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .letra {
+            background: #0a2f44;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* FEEDBACK */
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .feedback.sucesso {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback.erro {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .feedback.bonus {
+            background: #fff3cd;
+            color: #856404;
+            display: block;
+        }
+
+        /* BOTÕES */
+        .botoes {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            flex: 1;
+            background: linear-gradient(135deg, #0a2f44, #1b4a6b);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 0 #042331;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-reiniciar {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+
+        /* RANKING */
+        .ranking {
+            background: #ecf0f1;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .ranking-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .ranking-item {
+            background: white;
+            border: 2px solid #bdc3c7;
+            border-radius: 10px;
+            padding: 8px;
+            text-align: center;
+            font-size: 12px;
+            position: relative;
+        }
+
+        .ranking-item.acertou {
+            background: #d4edda;
+            border-color: #27ae60;
+        }
+
+        .ranking-item.errou {
+            background: #f8d7da;
+            border-color: #e74c3c;
+        }
+
+        .dificuldade-indicador {
+            font-size: 10px;
+            margin-top: 3px;
+        }
+
+        /* MODAL FALÊNCIA */
+        .modal-falencia {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-conteudo {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 400px;
+            border: 5px solid #e74c3c;
+        }
+
+        .modal-conteudo h2 {
+            color: #e74c3c;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* RESULTADO FINAL */
+        .resultado-final {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, gold, #f39c12);
+            border-radius: 25px;
+            color: #0a2f44;
+            margin-top: 25px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-falencia" id="modal-falencia">
+        <div class="modal-conteudo">
+            <h2>💀 FALÊNCIA 💀</h2>
+            <p>Você errou 2 perguntas seguidas!<br>Sua empresa faliu e o cofre zerou!</p>
+            <button class="modal-btn" onclick="fecharModalFalencia()">Recomeçar</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>🏢 ESTRATÉGIA EMPRESARIAL</h1>
+        <div class="subtitulo">Teste seus conhecimentos - 3 níveis de dificuldade</div>
+
+        <!-- INDICADOR DE NÍVEL -->
+        <div class="nivel-indicador">
+            <span>📊 NÍVEL ATUAL</span>
+            <span class="nivel-badge" id="nivel-atual">FÁCIL</span>
+            <span id="pontos-nivel">0/10</span>
+        </div>
+
+        <!-- ALERTAS -->
+        <div class="alerta-falencia" id="alerta-falencia">
+            ⚠️ CUIDADO! Você está a 1 erro da FALÊNCIA! ⚠️
+        </div>
+
+        <!-- COFRE -->
+        <div class="cofre-container">
+            <div class="cofre-header">
+                <div class="cofre-titulo">
+                    <span>💰</span>
+                    <span>CAPITAL DA EMPRESA</span>
+                </div>
+                <div class="cofre-valor" id="cofre-valor">R$ 0</div>
+            </div>
+            <div class="cofre-barras" id="cofre-barras"></div>
+        </div>
+
+        <!-- BÔNUS -->
+        <div class="bonus-ativo" id="bonus-ativo" style="display: none;">
+            ⚡ BÔNUS ATIVO! +15% em cada acerto! ⚡
+        </div>
+
+        <!-- STATS -->
+        <div class="empresa-card">
+            <div class="empresa-stats">
+                <div class="stat">
+                    <div class="stat-valor" id="pontuacao">0</div>
+                    <div class="stat-label">Pontos</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-valor" id="acertos">0/20</div>
+                    <div class="stat-label">Acertos</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-valor" id="erros-consecutivos">0</div>
+                    <div class="stat-label">Erros consec.</div>
+                </div>
+            </div>
+
+            <div class="sequencia-container" id="sequencia-texto">
+                🎯 Acertos seguidos: 0
+            </div>
+
+            <div class="barra-progresso">
+                <div class="barra-preenchimento" id="barra-progresso"></div>
+            </div>
+        </div>
+
+        <!-- PERGUNTA ATUAL -->
+        <div class="pergunta-container">
+            <div class="dificuldade-tag" id="dificuldade-tag" style="background: #27ae60; color: white;">FÁCIL</div>
+            <div class="pergunta-numero" id="pergunta-numero">Pergunta 1/20</div>
+            <div class="pergunta-texto" id="pergunta-texto">Carregando...</div>
+            <div class="opcoes" id="opcoes"></div>
+            <div class="feedback" id="feedback"></div>
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="botoes">
+            <button class="btn" id="proxima-btn" onclick="proximaPergunta()" disabled>➡️ PRÓXIMA</button>
+            <button class="btn btn-reiniciar" onclick="reiniciar()">🔄 REINICIAR</button>
+        </div>
+
+        <!-- RANKING -->
+        <div class="ranking">
+            <div class="ranking-grid" id="ranking-grid"></div>
+        </div>
+
+        <!-- RESULTADO FINAL -->
+        <div class="resultado-final" id="resultado-final">
+            <h2>🏁 RESULTADO FINAL</h2>
+            <div class="cofre-valor" id="resultado-cofre" style="margin: 20px auto;">R$ 0</div>
+            <div id="resultado-mensagem"></div>
+        </div>
+    </div>
+
+    <script>
+        // ========== PERGUNTAS POR NÍVEL ==========
+        const perguntas = [
+            // NÍVEL FÁCIL (Perguntas 1-10)
+            {
+                pergunta: "O que é vantagem competitiva?",
+                opcoes: ["A) Ter mais funcionários", "B) Capacidade de superar concorrentes oferecendo mais valor", "C) Ter o maior escritório", "D) Gastar mais em marketing"],
+                correta: 1,
+                valor: 100,
+                nivel: "Fácil"
+            },
+          {
+    pergunta: "O que é análise de mercado?",
+    opcoes: [
+        "A) Estudo do setor, concorrentes e consumidores para tomada de decisão",
+        "B) Cálculo do faturamento mensal",
+        "C) Número de funcionários da empresa",
+        "D) Valor do aluguel do escritório"
+    ],
+    correta: 0,
+    valor: 100,
+    nivel: "Fácil"
+},
+            {
+                pergunta: "O que é missão de uma empresa?",
+                opcoes: ["A) O lucro que ela quer alcançar", "B) Sua razão de existir e propósito principal", "C) O número de funcionários", "D) Seu faturamento anual"],
+                correta: 1,
+                valor: 100,
+                nivel: "Fácil"
+            },
+            {
+                pergunta: "O que caracteriza uma estratégia empresarial eficaz?",
+                opcoes: ["A) Focar apenas nas operações diárias", "B) Definir objetivos claros e vantagem competitiva", "C) Reduzir funcionários", "D) Copiar concorrentes"],
+                correta: 1,
+                valor: 100,
+                nivel: "Fácil"
+            },
+            {
+                pergunta: "O posicionamento estratégico está relacionado a:",
+                opcoes: ["A) Como organizar funcionários", "B) Como a empresa compete no mercado", "C) Como pagar impostos", "D) Como contratar pessoas"],
+                correta: 1,
+                valor: 100,
+                nivel: "Fácil"
+            },
+            {
+                pergunta: "Quando uma empresa oferece produtos únicos, ela adota:",
+                opcoes: ["A) Liderança em custos", "B) Diferenciação", "C) Diversificação", "D) Redução de mercado"],
+                correta: 1,
+                valor: 100,
+                nivel: "Fácil"
+            },
+            {
+                pergunta: "A estratégia de liderança em custos busca:",
+                opcoes: ["A) Oferecer o menor preço", "B) Produzir menos", "C) Ter mais funcionários", "D) Aumentar burocracia"],
+                correta: 0,
+                valor: 100,
+                nivel: "Fácil"
+            },
+            {
+                pergunta: "Trade-offs estratégicos ocorrem quando:",
+                opcoes: ["A) A empresa faz tudo ao mesmo tempo", "B) Precisa escolher entre alternativas", "C) Não existem limitações", "D) O mercado não muda"],
+                correta: 1,
+                valor: 100,
+                nivel: "Fácil"
+            },
+            {
+                pergunta: "Estratégia deliberada é aquela que:",
+                opcoes: ["A) Surge por acaso", "B) É planejada antecipadamente", "C) Não tem objetivos", "D) Surge do mercado"],
+                correta: 1,
+                valor: 100,
+                nivel: "Fácil"
+            },
+            {
+                pergunta: "Estratégia emergente ocorre quando:",
+                opcoes: ["A) A empresa adapta ações conforme oportunidades", "B) Tudo segue o plano inicial", "C) Não existe planejamento", "D) Ignora mudanças"],
+                correta: 0,
+                valor: 100,
+                nivel: "Fácil"
+            },
+            
+            // NÍVEL MÉDIO (Perguntas 11-15)
+            {
+                pergunta: "A estratégia baseada em recursos afirma que vantagem competitiva vem de:",
+                opcoes: ["A) Recursos internos valiosos e difíceis de imitar", "B) Apenas preços baixos", "C) Grandes escritórios", "D) Muitas filiais"],
+                correta: 0,
+                valor: 200,
+                nivel: "Médio"
+            },
+            {
+                pergunta: "Qual exemplo representa um recurso estratégico intangível?",
+                opcoes: ["A) Máquinas", "B) Equipamentos", "C) Marca reconhecida", "D) Estoque"],
+                correta: 2,
+                valor: 200,
+                nivel: "Médio"
+            },
+            {
+                pergunta: "A globalização aumenta principalmente:",
+                opcoes: ["A) Isolamento das empresas", "B) Concorrência entre países", "C) Redução do comércio", "D) Produção local"],
+                correta: 1,
+                valor: 200,
+                nivel: "Médio"
+            },
+            {
+                pergunta: "O que é 'core business'?",
+                opcoes: ["A) O negócio principal da empresa", "B) O departamento de TI", "C) A sede da empresa", "D) O conselho administrativo"],
+                correta: 0,
+                valor: 200,
+                nivel: "Médio"
+            },
+            {
+                pergunta: "O que significa 'benchmarking'?",
+                opcoes: ["A) Copiar concorrentes", "B) Comparar práticas com empresas de referência", "C) Demitir funcionários", "D) Aumentar preços"],
+                correta: 1,
+                valor: 200,
+                nivel: "Médio"
+            },
+            
+            // NÍVEL DIFÍCIL (Perguntas 16-20)
+            {
+                pergunta: "Sobre vantagem competitiva sustentável, é correto afirmar que:",
+                opcoes: [
+                    "A) Surge exclusivamente da redução contínua de custos operacionais",
+                    "B) Está associada à posse de recursos e capacidades difíceis de imitar e substituir",
+                    "C) Depende apenas do aumento da participação de mercado",
+                    "D) É garantida quando a empresa atua em mercados internacionais"
+                ],
+                correta: 1,
+                valor: 300,
+                nivel: "Difícil"
+            },
+            {
+                pergunta: "No contexto de estratégia deliberada e emergente, pode-se afirmar que:",
+                opcoes: [
+                    "A) Estratégias emergentes são sempre resultado de falhas no planejamento formal",
+                    "B) Estratégias deliberadas eliminam completamente a necessidade de adaptação",
+                    "C) Estratégias emergentes podem surgir a partir de padrões de ação não intencionalmente planejados",
+                    "D) Estratégias emergentes só ocorrem em empresas de pequeno porte"
+                ],
+                correta: 2,
+                valor: 300,
+                nivel: "Difícil"
+            },
+            {
+                pergunta: "Sobre trade-offs estratégicos, assinale a alternativa correta:",
+                opcoes: [
+                    "A) São falhas gerenciais que devem ser evitadas a qualquer custo",
+                    "B) Ocorrem apenas quando há escassez financeira",
+                    "C) São escolhas que reforçam o posicionamento estratégico ao exigir renúncias",
+                    "D) Indicam ausência de planejamento organizacional"
+                ],
+                correta: 2,
+                valor: 300,
+                nivel: "Difícil"
+            },
+            {
+                pergunta: "Em relação ao posicionamento estratégico, é correto afirmar que:",
+                opcoes: [
+                    "A) Empresas podem sustentar simultaneamente liderança absoluta em custos e diferenciação máxima sem conflitos",
+                    "B) O posicionamento é definido exclusivamente pela área de marketing",
+                    "C) O posicionamento estratégico busca ocupar um espaço único na percepção do cliente",
+                    "D) Toda empresa deve competir apenas por preço para garantir sobrevivência"
+                ],
+                correta: 2,
+                valor: 300,
+                nivel: "Difícil"
+            },
+            {
+                pergunta: "Considerando a estratégia baseada em recursos, é correto afirmar que:",
+                opcoes: [
+                    "A) A vantagem competitiva depende prioritariamente da estrutura do setor",
+                    "B) Recursos tangíveis são sempre mais importantes que os intangíveis",
+                    "C) Recursos estratégicos precisam ser valiosos, raros, difíceis de imitar e organizados adequadamente",
+                    "D) Tecnologia adquirida no mercado garante vantagem sustentável automática"
+                ],
+                correta: 2,
+                valor: 300,
+                nivel: "Difícil"
+            }
+        ];
+
+        // ========== VARIÁVEIS ==========
+        let perguntaAtual = 0;
+        let acertos = 0;
+        let pontuacao = 0;
+        let dinheiroCofre = 0;
+        let errosConsecutivos = 0;
+        let acertosConsecutivos = 0;
+        let bonusAtivo = false;
+        let respondidas = new Array(20).fill(null);
+        let quizFinalizado = false;
+
+        // ========== ELEMENTOS ==========
+        const perguntaNumero = document.getElementById('pergunta-numero');
+        const perguntaTexto = document.getElementById('pergunta-texto');
+        const opcoesDiv = document.getElementById('opcoes');
+        const feedbackDiv = document.getElementById('feedback');
+        const proximaBtn = document.getElementById('proxima-btn');
+        const pontuacaoEl = document.getElementById('pontuacao');
+        const acertosEl = document.getElementById('acertos');
+        const errosConsecutivosEl = document.getElementById('erros-consecutivos');
+        const sequenciaTexto = document.getElementById('sequencia-texto');
+        const barraProgresso = document.getElementById('barra-progresso');
+        const rankingGrid = document.getElementById('ranking-grid');
+        const resultadoFinal = document.getElementById('resultado-final');
+        const cofreValor = document.getElementById('cofre-valor');
+        const cofreBarras = document.getElementById('cofre-barras');
+        const resultadoCofre = document.getElementById('resultado-cofre');
+        const alertaFalencia = document.getElementById('alerta-falencia');
+        const bonusAtivoDiv = document.getElementById('bonus-ativo');
+        const modalFalencia = document.getElementById('modal-falencia');
+        const nivelAtual = document.getElementById('nivel-atual');
+        const pontosNivel = document.getElementById('pontos-nivel');
+        const dificuldadeTag = document.getElementById('dificuldade-tag');
+
+        // ========== FUNÇÕES ==========
+        function atualizarNivel() {
+            if (perguntaAtual < 10) {
+                nivelAtual.innerHTML = 'FÁCIL';
+                nivelAtual.style.background = 'gold';
+                nivelAtual.style.color = '#2c3e50';
+            } else if (perguntaAtual < 15) {
+                nivelAtual.innerHTML = 'MÉDIO';
+                nivelAtual.style.background = '#f39c12';
+                nivelAtual.style.color = 'white';
+            } else {
+                nivelAtual.innerHTML = 'DIFÍCIL';
+                nivelAtual.style.background = '#e74c3c';
+                nivelAtual.style.color = 'white';
+            }
+            pontosNivel.innerHTML = `${perguntaAtual}/20`;
+        }
+
+        function atualizarCofre() {
+            cofreValor.innerHTML = `R$ ${dinheiroCofre}`;
+            
+            let numeroBarras = Math.min(10, Math.floor(dinheiroCofre / 200) + 1);
+            let html = '';
+            
+            for (let i = 0; i < 10; i++) {
+                let altura = i < numeroBarras ? 20 + (i * 15) : 5;
+                html += `<div class="barra-dinheiro" style="height: ${altura}px;"></div>`;
+            }
+            
+            cofreBarras.innerHTML = html;
+        }
+
+        function verificarBonus() {
+            if (acertosConsecutivos >= 3 && !bonusAtivo) {
+                bonusAtivo = true;
+                bonusAtivoDiv.style.display = 'inline-block';
+                feedbackDiv.className = 'feedback bonus';
+                feedbackDiv.innerHTML = '⚡ BÔNUS ATIVADO! +15% em cada acerto por 3 acertos seguidos! ⚡';
+            }
+        }
+
+        function verificarFalencia() {
+            if (errosConsecutivos >= 2) {
+                modalFalencia.style.display = 'flex';
+                dinheiroCofre = 0;
+                pontuacao = 0;
+                errosConsecutivos = 0;
+                atualizarCofre();
+                pontuacaoEl.innerHTML = pontuacao;
+                errosConsecutivosEl.innerHTML = errosConsecutivos;
+                quizFinalizado = true;
+                proximaBtn.disabled = true;
+                return true;
+            }
+            
+            alertaFalencia.style.display = errosConsecutivos === 1 ? 'block' : 'none';
+            return false;
+        }
+
+        function fecharModalFalencia() {
+            modalFalencia.style.display = 'none';
+            reiniciar();
+        }
+
+        function carregarPergunta() {
+            if (perguntaAtual >= perguntas.length) {
+                mostrarResultadoFinal();
+                return;
+            }
+
+            const p = perguntas[perguntaAtual];
+            perguntaNumero.innerHTML = `Pergunta ${perguntaAtual + 1}/20`;
+            perguntaTexto.innerHTML = p.pergunta;
+            
+            // Atualiza tag de dificuldade
+            dificuldadeTag.innerHTML = p.nivel;
+            if (p.nivel === 'Fácil') dificuldadeTag.style.background = '#27ae60';
+            else if (p.nivel === 'Médio') dificuldadeTag.style.background = '#f39c12';
+            else dificuldadeTag.style.background = '#e74c3c';
+
+            let html = '';
+            p.opcoes.forEach((opcao, i) => {
+                let classe = 'opcao';
+                if (respondidas[perguntaAtual] !== null) {
+                    if (i === p.correta) classe += ' correta';
+                    else if (i === respondidas[perguntaAtual]) classe += ' incorreta';
+                    classe += ' disabled';
+                }
+                html += `
+                    <div class="${classe}" onclick="responder(${i})">
+                        <span class="letra">${opcao[0]}</span>
+                        <span>${opcao.substring(3)}</span>
+                    </div>
+                `;
+            });
+            opcoesDiv.innerHTML = html;
+            
+            proximaBtn.disabled = respondidas[perguntaAtual] === null;
+            atualizarNivel();
+        }
+
+        function responder(opcao) {
+            if (respondidas[perguntaAtual] !== null || quizFinalizado) return;
+
+            const p = perguntas[perguntaAtual];
+            const acertou = (opcao === p.correta);
+
+            respondidas[perguntaAtual] = opcao;
+
+            if (acertou) {
+                let valorGanho = p.valor;
+                if (bonusAtivo) {
+                    valorGanho = Math.floor(valorGanho * 1.15);
+                }
+                
+                acertos++;
+                acertosConsecutivos++;
+                errosConsecutivos = 0;
+                pontuacao += valorGanho;
+                dinheiroCofre += valorGanho;
+                
+                feedbackDiv.className = 'feedback sucesso';
+                feedbackDiv.innerHTML = `✅ CORRETO! +R$ ${valorGanho} ${bonusAtivo ? '(com bônus de 15%)' : ''}`;
+                
+                verificarBonus();
+                
+                cofreValor.style.transform = 'scale(1.2)';
+                setTimeout(() => cofreValor.style.transform = 'scale(1)', 200);
+            } else {
+                acertosConsecutivos = 0;
+                errosConsecutivos++;
+                bonusAtivo = false;
+                bonusAtivoDiv.style.display = 'none';
+                
+                feedbackDiv.className = 'feedback erro';
+                feedbackDiv.innerHTML = `❌ ERRADO! A resposta correta é: ${p.opcoes[p.correta]}`;
+                
+                if (verificarFalencia()) return;
+            }
+
+            pontuacaoEl.innerHTML = pontuacao;
+            acertosEl.innerHTML = acertos + '/20';
+            errosConsecutivosEl.innerHTML = errosConsecutivos;
+            sequenciaTexto.innerHTML = `🎯 Acertos seguidos: ${acertosConsecutivos}`;
+            barraProgresso.style.width = (acertos / 20 * 100) + '%';
+            
+            atualizarCofre();
+            carregarPergunta();
+            atualizarRanking();
+        }
+
+        function proximaPergunta() {
+            if (perguntaAtual < perguntas.length - 1) {
+                perguntaAtual++;
+                feedbackDiv.className = 'feedback';
+                feedbackDiv.innerHTML = '';
+                carregarPergunta();
+            } else {
+                mostrarResultadoFinal();
+            }
+        }
+
+        function atualizarRanking() {
+            let html = '';
+            for (let i = 0; i < 20; i++) {
+                let classe = 'ranking-item';
+                if (respondidas[i] !== null) {
+                    classe += respondidas[i] === perguntas[i].correta ? ' acertou' : ' errou';
+                }
+                let nivel = '';
+                if (i < 10) nivel = 'F';
+                else if (i < 15) nivel = 'M';
+                else nivel = 'D';
+                
+                html += `<div class="${classe}">P${i+1}<br><span class="dificuldade-indicador">${nivel}</span></div>`;
+            }
+            rankingGrid.innerHTML = html;
+        }
+
+        function mostrarResultadoFinal() {
+            quizFinalizado = true;
+            proximaBtn.disabled = true;
+            resultadoFinal.style.display = 'block';
+            resultadoCofre.innerHTML = `R$ ${dinheiroCofre}`;
+            
+            let mensagem = '';
+            if (acertos === 20) mensagem = '🌟 PERFEITO! Você é um expert em estratégia empresarial! 🌟';
+            else if (acertos >= 17) mensagem = '🏆 EXCELENTE! Conhecimento sólido em todos os níveis!';
+            else if (acertos >= 14) mensagem = '👍 MUITO BOM! Domina bem os conceitos!';
+            else if (acertos >= 10) mensagem = '📚 BOM! Continue estudando os níveis mais avançados!';
+            else mensagem = '💪 NÃO DESISTA! Pratique mais e volte mais forte!';
+            
+            document.getElementById('resultado-mensagem').innerHTML = mensagem;
+        }
+
+        function reiniciar() {
+            perguntaAtual = 0;
+            acertos = 0;
+            pontuacao = 0;
+            dinheiroCofre = 0;
+            errosConsecutivos = 0;
+            acertosConsecutivos = 0;
+            bonusAtivo = false;
+            respondidas = new Array(20).fill(null);
+            quizFinalizado = false;
+            
+            pontuacaoEl.innerHTML = '0';
+            acertosEl.innerHTML = '0/20';
+            errosConsecutivosEl.innerHTML = '0';
+            sequenciaTexto.innerHTML = '🎯 Acertos seguidos: 0';
+            barraProgresso.style.width = '0%';
+            
+            feedbackDiv.className = 'feedback';
+            feedbackDiv.innerHTML = '';
+            resultadoFinal.style.display = 'none';
+            alertaFalencia.style.display = 'none';
+            bonusAtivoDiv.style.display = 'none';
+            
+            atualizarCofre();
+            atualizarRanking();
+            carregarPergunta();
+        }
+
+        // ========== INICIALIZAÇÃO ==========
+        atualizarCofre();
+        carregarPergunta();
+        atualizarRanking();
+    </script>
+</body>
+</html>
